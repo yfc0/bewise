@@ -1,0 +1,36 @@
+version: "3.7"
+
+services:
+  web:
+    build:
+      dockerfile: ./etc/Dockerfile
+      context: .
+    restart: always
+    env_file: .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/usr/src
+    networks:
+      - main_net
+  db:
+    image: postgres:12.0-alpine
+    env_file: .env
+    ports:
+      - 5432:5432
+    networks:
+      - main_net
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - main_net
+
+
+
+
+networks:
+  main_net:
+    external: True
+volumes:
+    postgres_data:
